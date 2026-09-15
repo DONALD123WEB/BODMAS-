@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Account - BODMAS Calculator</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+
+<body class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
+
+
+    <div class="w-full max-w-md bg-gray-800 rounded-2xl shadow-2xl p-6">
+
+
+        <h1 class="text-white text-3xl font-bold text-center mb-2">
+            BODMAS Calculator
+        </h1>
+
+
+        <p class="text-gray-400 text-center mb-6">
+            Create your account
+        </p>
+
+
+        <form id="registerForm">
+
+
+            <!-- Name -->
+
+            <div class="mb-4">
+
+                <label class="text-gray-300 block mb-2">
+                    Full Name
+                </label>
+
+                <input
+                    id="name"
+                    type="text"
+                    required
+                    placeholder="Enter your name"
+                    class="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
+                >
+
+            </div>
+
+
+            <!-- Email -->
+
+            <div class="mb-4">
+
+                <label class="text-gray-300 block mb-2">
+                    Email
+                </label>
+
+                <input
+                    id="email"
+                    type="email"
+                    required
+                    placeholder="Enter your email"
+                    class="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
+                >
+
+            </div>
+
+
+            <!-- Password -->
+
+            <div class="mb-4">
+
+                <label class="text-gray-300 block mb-2">
+                    Password
+                </label>
+
+                <input
+                    id="password"
+                    type="password"
+                    required
+                    minlength="6"
+                    placeholder="At least 6 characters"
+                    class="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
+                >
+
+            </div>
+
+
+            <!-- Error -->
+
+            <div
+                id="errorMessage"
+                class="hidden bg-red-600 text-white p-3 rounded-lg mb-4"
+            ></div>
+
+
+            <!-- Register -->
+
+            <button
+                type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-3 rounded-lg"
+            >
+                Create Account
+            </button>
+
+
+        </form>
+
+
+        <p class="text-gray-400 text-center mt-6">
+
+            Already have an account?
+
+            <a
+                href="login.html"
+                class="text-blue-400 hover:text-blue-300"
+            >
+                Login
+            </a>
+
+        </p>
+
+
+    </div>
+
+
+    <script type="module">
+
+        import { auth, db } from "./firebase-config.js";
+
+
+        import {
+            createUserWithEmailAndPassword,
+            updateProfile
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+        import {
+            doc,
+            setDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+        const registerForm =
+            document.getElementById("registerForm");
+
+
+        const errorMessage =
+            document.getElementById("errorMessage");
+
+
+        registerForm.addEventListener(
+            "submit",
+            async (event) => {
+
+                event.preventDefault();
+
+
+                errorMessage.classList.add("hidden");
+
+
+                const name =
+                    document.getElementById("name").value.trim();
+
+
+                const email =
+                    document.getElementById("email").value.trim();
+
+
+                const password =
+                    document.getElementById("password").value;
+
+
+                try {
+
+
+                    // Create Firebase Authentication account
+
+                    const userCredential =
+                        await createUserWithEmailAndPassword(
+                            auth,
+                            email,
+                            password
+                        );
+
+
+                    const user =
+                        userCredential.user;
+
+
+                    // Save user's name
+
+                    await updateProfile(
+                        user,
+                        {
+                            displayName: name
+                        }
+                    );
+
+
+                    // Create user's Firestore document
+
+                    await setDoc(
+                        doc(
+                            db,
+                            "users",
+                            user.uid
+                        ),
+                        {
+
+                            uid: user.uid,
+
+                            name: name,
+
+                            email: email,
+
+                            createdAt:
+                                serverTimestamp()
+
+                        }
+                    );
+
+
+                    // Send user to calculator
+
+                    window.location.href =
+                        "calculator.html";
+
+
+                }
+                catch (error) {
+
+                    console.error(error);
+
+
+                    errorMessage.textContent =
+                        error.message;
+
+
+                    errorMessage.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

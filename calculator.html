@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BODMAS Calculator</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+
+<body class="bg-gray-900 min-h-screen p-4">
+
+
+    <!-- ================================================= -->
+    <!-- PROTECTED CONTENT -->
+    <!-- Only logged-in users can see this -->
+    <!-- ================================================= -->
+
+    <div id="protectedContent" class="hidden">
+
+
+        <div class="w-full max-w-6xl mx-auto">
+
+
+            <!-- ========================= -->
+            <!-- HEADER -->
+            <!-- ========================= -->
+
+            <div class="bg-gray-800 rounded-2xl shadow-2xl p-5 mb-5">
+
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+
+
+                    <div>
+
+                        <h1 class="text-white text-2xl font-bold">
+                            BODMAS Calculator
+                        </h1>
+
+                        <p
+                            id="welcomeUser"
+                            class="text-gray-400 mt-1"
+                        >
+                            Checking login...
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        id="logoutButton"
+                        class="bg-red-600 hover:bg-red-700 text-white font-bold px-5 py-3 rounded-xl transition"
+                    >
+                        Logout
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ========================= -->
+            <!-- MAIN CONTENT -->
+            <!-- ========================= -->
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+
+                <!-- ========================= -->
+                <!-- CALCULATOR -->
+                <!-- ========================= -->
+
+                <div class="bg-gray-800 rounded-2xl shadow-2xl p-5">
+
+
+                    <h2 class="text-white text-xl font-bold text-center mb-5">
+                        Calculator
+                    </h2>
+
+
+
+                    <!-- Display -->
+
+                    <div class="mb-5">
+
+                        <input
+                            id="screen"
+                            type="text"
+                            readonly
+                            placeholder="0"
+                            class="w-full bg-gray-950 text-white text-right text-3xl p-4 rounded-xl outline-none border border-gray-700"
+                        >
+
+                    </div>
+
+
+
+                    <!-- Calculator Buttons -->
+
+                    <div class="grid grid-cols-4 gap-3">
+
+
+                        <!-- Row 1 -->
+
+                        <button
+                            onclick="clearDisplay()"
+                            class="bg-red-600 hover:bg-red-700 text-white text-xl font-bold p-4 rounded-xl transition"
+                        >
+                            C
+                        </button>
+
+
+                        <button
+                            onclick="deleteLast()"
+                            class="bg-gray-600 hover:bg-gray-700 text-white text-xl font-bold p-4 rounded-xl transition"
+                        >
+                            DEL
+                        </button>
+
+
+                        <button
+                            onclick="appendValue('(')"
+                            class="bg-gray-600 hover:bg-gray-700 text-white text-xl font-bold p-4 rounded-xl transition"
+                        >
+                            (
+                        </button>
+
+
+                        <button
+                            onclick="appendValue(')')"
+                            class="bg-gray-600 hover:bg-gray-700 text-white text-xl font-bold p-4 rounded-xl transition"
+                        >
+                            )
+                        </button>
+
+
+
+                        <!-- Row 2 -->
+
+                        <button
+                            onclick="appendValue('7')"
+                            class="calculator-button"
+                        >
+                            7
+                        </button>
+
+
+                        <button
+                            onclick="appendValue('8')"
+                            class="calculator-button"
+                        >
+                            8
+                        </button>
+
+
+                        <button
+                            onclick="appendValue('9')"
+                            class="calculator-button"
+                        >
+                            9
+                        </button>
+
+
+                        <button
+                            onclick="appendValue('/')"
+                            class="operator-button"
+                        >
+                            ÷
+                        </button>
+
+
+
+                        <!-- Row 3 -->
+
+                        <button
+                            onclick="appendValue('4')"
+                            class="calculator-button"
+                        >
+                            4
+                        </button>
+
+
+                        <button
+                            onclick="appendValue('5')"
+                            class="calculator-button"
+                        >
+                            5
+                        </button>
+
+
+                        <button
+                            onclick="appendValue('6')"
+                            class="calculator-button"
+                        >
+                            6
+                        </button>
+
+
+                        <button
+                            onclick="appendValue('*')"
+                            class="operator-button"
+                        >
+                            ×
+                        </button>
+
+
+
+                        <!-- Row 4 -->
+
+                        <button
+                            onclick="appendValue('1')"
+                            class="calculator-button"
+                        >
+                            1
+                        </button>
+
+
+                        <button
+                            onclick="appendValue('2')"
+                            class="calculator-button"
+                        >
+                            2
+                        </button>
+
+
+                        <button
+                            onclick="appendValue('3')"
+                            class="calculator-button"
+                        >
+                            3
+                        </button>
+
+
+                        <button
+                            onclick="appendValue('-')"
+                            class="operator-button"
+                        >
+                            −
+                        </button>
+
+
+
+                        <!-- Row 5 -->
+
+                        <button
+                            onclick="appendValue('0')"
+                            class="calculator-button"
+                        >
+                            0
+                        </button>
+
+
+                        <button
+                            onclick="appendValue('.')"
+                            class="calculator-button"
+                        >
+                            .
+                        </button>
+
+
+                        <button
+                            onclick="appendValue('%')"
+                            class="percentage-button"
+                        >
+                            %
+                        </button>
+
+
+                        <button
+                            onclick="appendValue('+')"
+                            class="operator-button"
+                        >
+                            +
+                        </button>
+
+
+
+                        <!-- Row 6 -->
+
+                        <button
+                            onclick="appendValue('^')"
+                            class="percentage-button"
+                        >
+                            xʸ
+                        </button>
+
+
+                        <button
+                            onclick="calculate()"
+                            class="col-span-3 bg-green-600 hover:bg-green-700 text-white text-xl font-bold p-4 rounded-xl transition"
+                        >
+                            =
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ========================= -->
+                <!-- CALCULATION HISTORY -->
+                <!-- ========================= -->
+
+                <div class="bg-gray-800 rounded-2xl shadow-2xl p-5">
+
+
+                    <div class="flex justify-between items-center mb-5">
+
+
+                        <h2 class="text-white text-xl font-bold">
+                            Calculation History
+                        </h2>
+
+
+                        <button
+                            id="clearHistoryButton"
+                            class="text-red-400 hover:text-red-300 text-sm font-semibold"
+                        >
+                            Clear All
+                        </button>
+
+
+                    </div>
+
+
+                    <div
+                        id="history"
+                        class="space-y-3 max-h-[550px] overflow-y-auto"
+                    >
+
+                        <p class="text-gray-400">
+                            Loading history...
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- BUTTON STYLES -->
+    <!-- ========================= -->
+
+    <style>
+
+        .calculator-button {
+
+            background-color: rgb(55 65 81);
+
+            color: white;
+
+            font-size: 1.25rem;
+
+            font-weight: bold;
+
+            padding: 1rem;
+
+            border-radius: 0.75rem;
+
+            transition: 0.2s;
+
+        }
+
+
+        .calculator-button:hover {
+
+            background-color: rgb(75 85 99);
+
+        }
+
+
+        .operator-button {
+
+            background-color: rgb(37 99 235);
+
+            color: white;
+
+            font-size: 1.25rem;
+
+            font-weight: bold;
+
+            padding: 1rem;
+
+            border-radius: 0.75rem;
+
+            transition: 0.2s;
+
+        }
+
+
+        .operator-button:hover {
+
+            background-color: rgb(29 78 216);
+
+        }
+
+
+        .percentage-button {
+
+            background-color: rgb(147 51 234);
+
+            color: white;
+
+            font-size: 1.25rem;
+
+            font-weight: bold;
+
+            padding: 1rem;
+
+            border-radius: 0.75rem;
+
+            transition: 0.2s;
+
+        }
+
+
+        .percentage-button:hover {
+
+            background-color: rgb(126 34 206);
+
+        }
+
+    </style>
+
+
+
+    <!-- ========================= -->
+    <!-- FIREBASE CALCULATOR LOGIC -->
+    <!-- ========================= -->
+
+    <script
+        type="module"
+        src="calculator.js"
+    ></script>
+
+
+</body>
+
+</html>
